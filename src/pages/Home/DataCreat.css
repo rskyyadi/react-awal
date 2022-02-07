@@ -1,0 +1,28 @@
+.Form-Rskyy {
+    margin-left: 12px;
+    text-align: left;
+}
+.Form-Rskyy button{
+     padding: 10px;
+     margin-left: 10px;
+     background-color: chartreuse;
+     border-radius: 15px;
+}
+
+.Form-Rskyy button:hover {
+     background-color: rgb(173, 248, 97);
+     border-radius: 15px;
+     padding: 11px;
+     transition-duration: 1s;
+}
+
+.Form-Rskyy input {
+    padding: 9px;
+    padding-left: 5px;
+    border-radius: 15px;
+    border-color: blue;
+}
+
+.Form-Rskyy input:hover {
+    border-color: darkcyan;
+}

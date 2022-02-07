@@ -1,0 +1,9 @@
+.Container {margin: auto; width: 50%; margin-top: 200px;}
+.Form {
+    width: 50%;
+    height: 300px; 
+    width: 50%; 
+    background-color: rgb(191, 191, 191);
+    border-radius: 20px;
+    padding: 20px;
+}
