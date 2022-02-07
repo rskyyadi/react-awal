@@ -37,8 +37,8 @@ function App (){
         <Router>
           <Sidebar_dua />
           <Switch>
-            <Route path='/' exact />
-            <Route path='/reports' />
+            <Route path='/' exact component={sidebarUtama} />
+            <Route path='/reports' component={utama} />
             <Route path='/product' />
             <Route path='/team' />
             <Route path='/messages' />
