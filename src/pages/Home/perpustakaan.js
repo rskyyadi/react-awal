@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faUserEdit, faTrash, faReply, faUserPlus, faCalendar, faHistory} from '@fortawesome/free-solid-svg-icons';
-import {Card, Table, Button, Col, Row, Modal, Form} from 'react-bootstrap';
+import {faUserEdit, faTrash, faReply, faUserPlus, faHistory} from '@fortawesome/free-solid-svg-icons';
+import {Card, Table, Button, Col, Row, Modal} from 'react-bootstrap';
 import {nanoid} from 'nanoid';
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 function Select() {
@@ -17,9 +16,9 @@ function Select() {
     const [date, setDate] = useState()
     console.log(date)
 
-    const handleDate = (e) => {
-        setDate(e.target.value)
-    }
+    // const handleDate = (e) => {
+    //     setDate(e.target.value)
+    // }
     
     // const [startDate, setStartDate] = useState(new Date());
     // console.log(startDate)
@@ -117,15 +116,12 @@ function Select() {
 //CHECKED
     const [checked, setChecked] = useState(true)
 
-    const handleChackbox = (e) => {
-        e.preventDefault()
+    // const handleChackbox = (e) => {
+    //     e.preventDefault()
 
-        setChecked({...checked, [e.target.name]:e.target.checked})
-    }
+    //     setChecked({...checked, [e.target.name]:e.target.checked})
+    // }
 
-//STYLE
-    const table_date = {display:'flex'}
-    const fa_calendar = {position:'absolute', color:'#9D9D9D', marginLeft:'165px', marginTop:'7px' }
 
 
     return(

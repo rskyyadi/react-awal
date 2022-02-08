@@ -39,9 +39,9 @@ function App (){
           <Switch>
             <Route path='/' exact component={sidebarUtama} />
             <Route path='/reports' component={utama} />
-            <Route path='/product' />
-            <Route path='/team' />
-            <Route path='/messages' />
+            <Route path='/product' component={dashboard} />
+            <Route path='/team' component={sidebarTiga} />
+            <Route path='/messages' component={biodata} />
             <Route path='/support' component={selectFormik} />
           </Switch>
         </Router> 
