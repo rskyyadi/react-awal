@@ -7,6 +7,7 @@ import axios from 'axios';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
+import { Switch } from '@headlessui/react';
 
 //rrrrfhm
 //pageSize x pageCount - pageSize + idndex - 1
@@ -29,7 +30,18 @@ function Select(){
     const getData = async () => {
         try{
             let response = await axios.get('https://jsonplaceholder.typicode.com/users')
-            setData(response.data)
+            const map = response.data.map((val) => {
+                return{
+                    id: nanoid(),
+                    name: val.name,
+                    username: val.username,
+                    email: val.email,
+                    website: val.website,
+                    phone: val.phone,
+                    checked: false
+                }
+            })
+            setData(map)
             setPaginatedData(_(response.data).slice(0).take(itemPerPages).value())
         }catch(e){
             console.log(e.message)
@@ -39,7 +51,21 @@ function Select(){
         getData()
     }, [])
 
-    
+//TOGGLE SWITCH
+    const toggler = (id) => {
+        const main_toggler = user.map((users) => {
+            if(users.id === id) {
+                return{
+                    ...users, 
+                    checked: !users.checked
+                }
+            }
+            return users
+        })
+        setUser(main_toggler)
+    } 
+//CHACKED
+    const [chacked, setChacked] = useState(true)   
 //PAGINATION
     const itemPerPages = 4
     const pageCount = data? data.length/itemPerPages : 0
@@ -149,6 +175,7 @@ function Select(){
     const card = {width:'95%'}
     const add_button = {marginBottom:'10px'}
     const pagination_style = {display:'flex', justifyContent:'flex-end'}
+    const toggle_switch = {marginLeft:'auto', marginRight:'auto'}
 
 
 
@@ -253,20 +280,38 @@ function Select(){
                                         <td>{datas.gender}</td>
                                         <td>{datas.alamat}</td>
                                         <td style={{width:'120px'}}className='text-center'>
-                                            <Button variant='warning' 
-                                                className='text-white'
-                                                onClick={() => {
-                                                    editData(datas.id)
-                                                    setIsEdit(true)
-                                                    setAdd(datas)}}>
-                                                <FontAwesomeIcon icon={faUserEdit}/>
-                                            </Button>
-                                            <Button 
-                                                style={{marginLeft:'10px'}} 
-                                                variant='danger' 
-                                                onClick={() => deleteData(datas.id)}>
-                                                <FontAwesomeIcon icon={faTrash}/>
-                                            </Button>
+                                            <Switch
+                                                style={toggle_switch}
+                                                checked={users.checked}
+                                                onChange={() => toggler(users.id)}
+                                                className={`${users.checked ? 'background-satu' : 'background-dua'} switch-toggle`}>
+
+                                                <span className="sr-only">Use setting</span>
+                                                <span 
+                                                    aria-hidden="true" 
+                                                    className={`${users.checked ? 'button-satu' : 'button-dua'} switch-dua`}
+                                                />
+                                            </Switch>
+                                            {
+                                                users.checked ? 
+                                                        
+                                                <div className='button-flex'>
+                                                    <Button variant='warning' 
+                                                        className='text-white'
+                                                        onClick={() => {
+                                                            editData(datas.id)
+                                                            setIsEdit(true)
+                                                            setAdd(datas)}}>
+                                                        <FontAwesomeIcon icon={faUserEdit}/>
+                                                    </Button>
+                                                    <Button 
+                                                        style={{marginLeft:'10px'}} 
+                                                        variant='danger' 
+                                                        onClick={() => deleteData(datas.id)}>
+                                                        <FontAwesomeIcon icon={faTrash}/>
+                                                    </Button>
+                                                </div> : <span></span>
+                                            }
                                         </td>
                                     </tr>
                                 )

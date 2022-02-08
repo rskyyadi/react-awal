@@ -11,7 +11,7 @@ import contohSatu from '../src/pages/Home/contohSatu';
 import biodata from '../src/pages/Home/biodata';
 import selectFormik from '../src/pages/Home/selectFormik';
 import perpustakaan from '../src/pages/Home/perpustakaan';
-import Sidebar_dua from '../src/pages/sidebar/sidebar_2';
+import SidebarDua from '../src/pages/sidebar/sidebar_2';
 
 //membuat fungsi
 function App (){
@@ -35,7 +35,7 @@ function App (){
         </Router>  */}
 
         <Router>
-          <Sidebar_dua />
+          <SidebarDua />
           <Switch>
             <Route path='/' exact component={sidebarUtama} />
             <Route path='/reports' component={utama} />
