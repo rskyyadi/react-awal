@@ -9,8 +9,7 @@ import * as Yup from 'yup';
 import _ from 'lodash';
 import { Switch } from '@headlessui/react';
 
-//rrrrfhm
-//pageSize x pageCount - pageSize + idndex - 1
+
 
 function Select(){
     const [data, setData] = useState([])
@@ -64,8 +63,6 @@ function Select(){
         })
         setData(main_toggler)
     } 
-//CHACKED
-    const [chacked, setChacked] = useState(true)   
 //PAGINATION
     const itemPerPages = 4
     const pageCount = data? data.length/itemPerPages : 0
@@ -310,7 +307,8 @@ function Select(){
                                                         onClick={() => deleteData(datas.id)}>
                                                         <FontAwesomeIcon icon={faTrash}/>
                                                     </Button>
-                                                </div> : <span></span>
+                                                </div> 
+                                                : <span></span>
                                             }
                                         </td>
                                     </tr>
