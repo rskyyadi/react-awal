@@ -53,16 +53,16 @@ function Select(){
 
 //TOGGLE SWITCH
     const toggler = (id) => {
-        const main_toggler = user.map((users) => {
-            if(users.id === id) {
+        const main_toggler = data.map((datas) => {
+            if(datas.id === id) {
                 return{
-                    ...users, 
-                    checked: !users.checked
+                    ...datas, 
+                    checked: !datas.checked
                 }
             }
-            return users
+            return datas
         })
-        setUser(main_toggler)
+        setData(main_toggler)
     } 
 //CHACKED
     const [chacked, setChacked] = useState(true)   
@@ -282,18 +282,18 @@ function Select(){
                                         <td style={{width:'120px'}}className='text-center'>
                                             <Switch
                                                 style={toggle_switch}
-                                                checked={users.checked}
-                                                onChange={() => toggler(users.id)}
-                                                className={`${users.checked ? 'background-satu' : 'background-dua'} switch-toggle`}>
+                                                checked={datas.checked}
+                                                onChange={() => toggler(datas.id)}
+                                                className={`${datas.checked ? 'background-satu' : 'background-dua'} switch-toggle`}>
 
                                                 <span className="sr-only">Use setting</span>
                                                 <span 
                                                     aria-hidden="true" 
-                                                    className={`${users.checked ? 'button-satu' : 'button-dua'} switch-dua`}
+                                                    className={`${datas.checked ? 'button-satu' : 'button-dua'} switch-dua`}
                                                 />
                                             </Switch>
                                             {
-                                                users.checked ? 
+                                                datas.checked ? 
                                                         
                                                 <div className='button-flex'>
                                                     <Button variant='warning' 
