@@ -51,30 +51,30 @@ function Select(){
     }, [])
 
 //TOGGLE SWITCH
-    const toggler = (id) => {
-        const main_toggler = data.map((datas) => {
-            if(datas.id === id) {
-                return{
-                    ...datas, 
-                    checked: !datas.checked
-                }
-            }
-            return datas
-        })
-        setData(main_toggler)
-    } 
+    // const toggler = (id) => {
+    //     const main_toggler = data.map((datas) => {
+    //         if(datas.id === id) {
+    //             return{
+    //                 ...datas, 
+    //                 checked: !datas.checked
+    //             }
+    //         }
+    //         return datas
+    //     })
+    //     setData(main_toggler)
+    // } 
 //PAGINATION
-    // const itemPerPages = 4
-    // const pageCount = data? data.length/itemPerPages : 0
-    // // if(pageCount === 1) return null
-    // const pages = _.range(1, pageCount+1)
+    const itemPerPages = 4
+    const pageCount = data? data.length/itemPerPages : 0
+    // if(pageCount === 1) return null
+    const pages = _.range(1, pageCount+1)
     
-    // const pagination = (pageNo) => {
-    //     setCurentPage(pageNo)
-    //     const startIndex = (pageNo - 1) * itemPerPages
-    //     const paginatedPost = _(data).slice(startIndex).take(itemPerPages).value()
-    //     setPaginatedData(paginatedPost)
-    // }
+    const pagination = (pageNo) => {
+        setCurentPage(pageNo)
+        const startIndex = (pageNo - 1) * itemPerPages
+        const paginatedPost = _(data).slice(startIndex).take(itemPerPages).value()
+        setPaginatedData(paginatedPost)
+    }
 //CREATE DATA
     const createSubmit = (values) => {
 
