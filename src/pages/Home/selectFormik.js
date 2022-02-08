@@ -8,6 +8,7 @@ import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import { Switch } from '@headlessui/react';
+import '../sidebar/sidebar_2.css';
 
 
 
@@ -29,15 +30,13 @@ function Select(){
     const getData = async () => {
         try{
             let response = await axios.get('https://jsonplaceholder.typicode.com/users')
-            const map = response.data.map((val) => {
+            const map = response.data.map((val) => {  
                 return{
                     id: nanoid(),
                     name: val.name,
-                    username: val.username,
-                    email: val.email,
-                    website: val.website,
-                    phone: val.phone,
-                    checked: false
+                    gender: val.gender,
+                    alamat: val.alamat,
+                    checked: false,
                 }
             })
             setData(map)
@@ -288,7 +287,7 @@ function Select(){
                                                     aria-hidden="true" 
                                                     className={`${datas.checked ? 'button-satu' : 'button-dua'} switch-dua`}
                                                 />
-                                            </Switch>
+                                            </Switch>                      
                                             {
                                                 datas.checked ? 
                                                         
