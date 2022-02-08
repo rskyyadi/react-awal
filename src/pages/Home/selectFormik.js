@@ -30,16 +30,17 @@ function Select(){
     const getData = async () => {
         try{
             let response = await axios.get('https://jsonplaceholder.typicode.com/users')
-            const map = response.data.map((val) => {  
-                return{
-                    id: nanoid(),
-                    name: val.name,
-                    gender: val.gender,
-                    alamat: val.alamat,
-                    checked: false,
-                }
-            })
-            setData(map)
+             setData(response.data)
+            // const map = response.data.map((val) => {  
+            //     return{
+            //         id: nanoid(),
+            //         name: val.name,
+            //         gender: val.gender,
+            //         alamat: val.alamat,
+            //         checked: false,
+            //     }
+            // })
+            // setData(map)
             setPaginatedData(_(response.data).slice(0).take(itemPerPages).value())
         }catch(e){
             console.log(e.message)
@@ -63,17 +64,17 @@ function Select(){
         setData(main_toggler)
     } 
 //PAGINATION
-    const itemPerPages = 4
-    const pageCount = data? data.length/itemPerPages : 0
-    // if(pageCount === 1) return null
-    const pages = _.range(1, pageCount+1)
+    // const itemPerPages = 4
+    // const pageCount = data? data.length/itemPerPages : 0
+    // // if(pageCount === 1) return null
+    // const pages = _.range(1, pageCount+1)
     
-    const pagination = (pageNo) => {
-        setCurentPage(pageNo)
-        const startIndex = (pageNo - 1) * itemPerPages
-        const paginatedPost = _(data).slice(startIndex).take(itemPerPages).value()
-        setPaginatedData(paginatedPost)
-    }
+    // const pagination = (pageNo) => {
+    //     setCurentPage(pageNo)
+    //     const startIndex = (pageNo - 1) * itemPerPages
+    //     const paginatedPost = _(data).slice(startIndex).take(itemPerPages).value()
+    //     setPaginatedData(paginatedPost)
+    // }
 //CREATE DATA
     const createSubmit = (values) => {
 
@@ -276,7 +277,7 @@ function Select(){
                                         <td>{datas.gender}</td>
                                         <td>{datas.alamat}</td>
                                         <td style={{width:'120px'}}className='text-center'>
-                                            <Switch
+                                            {/* <Switch
                                                 style={toggle_switch}
                                                 checked={datas.checked}
                                                 onChange={() => toggler(datas.id)}
@@ -287,11 +288,11 @@ function Select(){
                                                     aria-hidden="true" 
                                                     className={`${datas.checked ? 'button-satu' : 'button-dua'} switch-dua`}
                                                 />
-                                            </Switch>                      
-                                            {
+                                            </Switch>                       */}
+                                            {/* {
                                                 datas.checked ? 
                                                         
-                                                <div className='button-flex'>
+                                                <div className='button-flex'> */}
                                                     <Button variant='warning' 
                                                         className='text-white'
                                                         onClick={() => {
@@ -306,9 +307,9 @@ function Select(){
                                                         onClick={() => deleteData(datas.id)}>
                                                         <FontAwesomeIcon icon={faTrash}/>
                                                     </Button>
-                                                </div> 
+                                                {/* </div> 
                                                 : <span></span>
-                                            }
+                                            } */}
                                         </td>
                                     </tr>
                                 )
