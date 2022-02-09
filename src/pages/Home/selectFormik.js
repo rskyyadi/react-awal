@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Table, Button, Modal } from 'react-bootstrap';
+import { Card, Table, Button, Modal, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserEdit, faTrash, faReply } from '@fortawesome/free-solid-svg-icons';
 import { nanoid } from 'nanoid';
@@ -79,6 +79,10 @@ function Select(){
         const paginatedPost = _(data).slice(startIndex).take(itemPerPages).value()
         setPaginatedData(paginatedPost)
     }
+//JUMLAH DATA DAN PAGES
+    const jumlah_data = data.length
+    const onclick_page = currentPage
+    const jumlah_page = pages.length
 //CREATE DATA
     const createSubmit = (values) => {
 
@@ -177,6 +181,9 @@ function Select(){
     const add_button = {marginBottom:'10px'}
     const pagination_style = {display:'flex', justifyContent:'flex-end'}
     const toggle_switch = {marginLeft:'auto', marginRight:'auto'}
+    const row_pages = {marginTop:'-15px'}
+    const dataPages = {marginLeft:'-60px'}
+    const jumlah_dataPages = {marginLeft:'-70px'}
 
 
 
@@ -187,6 +194,31 @@ function Select(){
                     <Button variant="primary" onClick={() => setShow(true)}>
                         + Tambah Data
                     </Button>
+                </div>
+
+                <div className='data-pages'>
+                    <Row>
+                        <Col md={2}>
+                            <p>Jumlah Data</p>
+                        </Col>
+                        <Col style={dataPages} md={1}>
+                            <p>:</p>
+                        </Col>
+                        <Col md={2}>
+                            <p style={jumlah_dataPages}>{jumlah_data} Data</p>
+                        </Col>
+                    </Row>
+                    <Row style={row_pages}>
+                        <Col md={2}>
+                            <p>Pages</p>
+                        </Col>
+                        <Col style={dataPages} md={1}>
+                            <p>:</p>
+                        </Col>
+                        <Col md={2}>
+                            <p style={jumlah_dataPages}>{onclick_page} - {jumlah_page} Page</p>
+                        </Col>
+                    </Row>
                 </div>
 
                 <Modal
