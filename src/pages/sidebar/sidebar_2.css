@@ -5,6 +5,7 @@
     --body-color: #E4E9F7;
     --sidebar-color: #FFFF;
     --primary-color: #695CFE;
+    --primary-color-tua: #2919df;
     --primary-color-terang: #F6F5FF;
     --toggle-color: #DDD;
     --text-color: #707070;
@@ -250,22 +251,16 @@ li{
     box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 .background-satu{
-    background-color: #234e52;
+    background-color: var(--primary-color-tua);
 }
 .background-dua{
-    background-color: #2c7a7b;
+    background-color: var(--primary-color);
 }
 .button-satu{
     transform: translateX(2.25rem);
 }
 .button-dua{
     transform: translateX(0px);
-}
-.background-satu{
-    background-color: #234e52;
-}
-.background-dua{
-    background-color: #2c7a7b;
 }
 .switch-toggle {
     position: relative; 
