@@ -28,21 +28,22 @@ function Select(){
     })
 //GET DATA
     const getData = async () => {
-        try{
-            let response = await axios.get('https://jsonplaceholder.typicode.com/users')
-             setData(response.data)
-            // const map = response.data.map((val) => {  
-            //     return{
-            //         id: nanoid(),
-            //         name: val.name,
-            //         gender: val.gender,
-            //         alamat: val.alamat,
-            //         checked: false,
-            //     }
-            // })
-            // setData(map)
+        try {
+            const response = await axios.get('https://jsonplaceholder.typicode.com/users')
+            //  setData(response.data)
+            const map = response.data.map((val) => {
+                return{
+                    id: nanoid(),
+                    name: val.name,
+                    gender: val.gender,
+                    alamat: val.alamat,
+                    checked: false
+                }
+            })
+            setData(map)
             setPaginatedData(_(response.data).slice(0).take(itemPerPages).value())
-        }catch(e){
+            
+        } catch(e) {
             console.log(e.message)
         }
     }
@@ -51,18 +52,21 @@ function Select(){
     }, [])
 
 //TOGGLE SWITCH
-    // const toggler = (id) => {
-    //     const main_toggler = data.map((datas) => {
-    //         if(datas.id === id) {
-    //             return{
-    //                 ...datas, 
-    //                 checked: !datas.checked
-    //             }
-    //         }
-    //         return datas
-    //     })
-    //     setData(main_toggler)
-    // } 
+    const toggler = (id) => {
+        const main_toggler = data.map((datas) => {
+            if(datas.id === id) {
+                return{
+                    ...datas, 
+                    checked: !datas.checked
+                }
+            }
+            return datas
+        })
+        const startIndex = (currentPage - 1) * itemPerPages
+        const paginatedPost = _(main_toggler).slice(startIndex).take(itemPerPages).value()
+        setPaginatedData(paginatedPost)
+        setData(main_toggler)
+    } 
 //PAGINATION
     const itemPerPages = 4
     const pageCount = data? data.length/itemPerPages : 0
@@ -163,8 +167,8 @@ function Select(){
     const deleteData = (id) => {
         const filters = data.filter(datas => datas.id !== id)
         setData(filters)
-        // const startIndex = (pageCount - 1) * pageSize
-        const paginatedPost = _(filters).slice(1).take(itemPerPages).value()
+        const startIndex = (currentPage - 1) * itemPerPages
+        const paginatedPost = _(filters).slice(startIndex).take(itemPerPages).value()
         setPaginatedData(paginatedPost)
     }
 //STYLE CSS
@@ -277,7 +281,7 @@ function Select(){
                                         <td>{datas.gender}</td>
                                         <td>{datas.alamat}</td>
                                         <td style={{width:'120px'}}className='text-center'>
-                                            {/* <Switch
+                                            <Switch
                                                 style={toggle_switch}
                                                 checked={datas.checked}
                                                 onChange={() => toggler(datas.id)}
@@ -288,11 +292,11 @@ function Select(){
                                                     aria-hidden="true" 
                                                     className={`${datas.checked ? 'button-satu' : 'button-dua'} switch-dua`}
                                                 />
-                                            </Switch>                       */}
-                                            {/* {
+                                            </Switch>                      
+                                            {
                                                 datas.checked ? 
                                                         
-                                                <div className='button-flex'> */}
+                                                <div className='button-flex'>
                                                     <Button variant='warning' 
                                                         className='text-white'
                                                         onClick={() => {
@@ -307,9 +311,9 @@ function Select(){
                                                         onClick={() => deleteData(datas.id)}>
                                                         <FontAwesomeIcon icon={faTrash}/>
                                                     </Button>
-                                                {/* </div> 
+                                                </div> 
                                                 : <span></span>
-                                            } */}
+                                            }
                                         </td>
                                     </tr>
                                 )
