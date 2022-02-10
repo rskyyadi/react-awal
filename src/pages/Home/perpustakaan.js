@@ -11,21 +11,6 @@ function Select() {
     const [isEdit, setIsEdit] = useState(false)
     const [indexEdit, setIndexEdit] = useState(null)
     const [hapusData, setHapusData] = useState([])
-
-//SET DATE
-    const [date, setDate] = useState()
-    console.log(date)
-
-    // const handleDate = (e) => {
-    //     setDate(e.target.value)
-    // }
-    
-    // const [startDate, setStartDate] = useState(new Date());
-    // console.log(startDate)
-
-    // const handleDate = (date) => {
-    //     setStartDate(date)
-    // }
 //MODAL DELETE
     const [delShow, setDelShow] = useState(false);
 
@@ -156,7 +141,7 @@ function Select() {
                             />
                         </Col>
                         <Col md-2>
-                            <label htmlFor='tgl'>Tgl Ambil : {date}</label>
+                            <label htmlFor='tgl'>Tgl Ambil</label>
                             <input 
                                 type='date' 
                                 name='tgl'
@@ -186,7 +171,7 @@ function Select() {
                                 name='detail'
                                 checked={checked}
                                 value='Belum Lulus'
-                                onChange={createData}
+                                onChange={() => setChecked()}
                             />
                             <label>Belum Lunas</label>
                         </Col>
