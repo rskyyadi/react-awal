@@ -139,6 +139,25 @@ function Select(){
             alamant:''
         })
     }
+//SEARCH
+    const handleSearch = (e) => {
+        if (e.target.value === ''){
+            window.location.reload(true)
+            const search_data = data
+            setData(search_data)
+            setData(data)
+            return
+        }
+        const searchResult = data.filter(datas => 
+            datas.name.toLowerCase().startsWith(e.target.value.toLowerCase()) ||
+            datas.gender.toLowerCase().startsWith(e.target.value.toLowerCase()) ||
+            datas.alamat.toLowerCase().startsWith(e.target.value.toLowerCase())
+        )
+        // const startIndex = (currentPage - 1) * itemPerPages
+        // const paginatedPost = _(searchResult).slice(startIndex).take(itemPerPages).value()
+        // setPaginatedData(paginatedPost)
+        setData(searchResult);
+    }
 //FORMIK
     const initialVal = {
         name: isEdit ? add.name : '',
@@ -184,6 +203,7 @@ function Select(){
     const row_pages = {marginTop:'-15px'}
     const dataPages = {marginLeft:'-60px'}
     const jumlah_dataPages = {marginLeft:'-70px'}
+    const search_input = {marginBottom:'10px'}
 
 
 
@@ -219,6 +239,16 @@ function Select(){
                             <p style={jumlah_dataPages}>{onclick_page} - {jumlah_page} Page</p>
                         </Col>
                     </Row>
+                </div>
+
+                <div style={search_input}>
+                    <input 
+                        className='form-control'
+                        type='text'
+                        name='search'
+                        placeholder='Cari Nama Anda Disini....'
+                        onChange={handleSearch}
+                    />
                 </div>
 
                 <Modal
