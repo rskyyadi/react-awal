@@ -148,7 +148,7 @@ function Select(){
             setData(data)
             return
         }
-        const searchResult = data.filter(datas => 
+        const searchResult = paginatedData.filter(datas => 
             datas.name.toLowerCase().startsWith(e.target.value.toLowerCase()) ||
             datas.gender.toLowerCase().startsWith(e.target.value.toLowerCase()) ||
             datas.alamat.toLowerCase().startsWith(e.target.value.toLowerCase())
@@ -156,7 +156,7 @@ function Select(){
         // const startIndex = (currentPage - 1) * itemPerPages
         // const paginatedPost = _(searchResult).slice(startIndex).take(itemPerPages).value()
         // setPaginatedData(paginatedPost)
-        setData(searchResult);
+        setPaginatedData(searchResult);
     }
 //FORMIK
     const initialVal = {
