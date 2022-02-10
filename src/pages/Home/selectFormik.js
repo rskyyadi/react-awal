@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Table, Button, Modal, Row, Col } from 'react-bootstrap';
+import { Card, Table, Button, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserEdit, faTrash, faReply } from '@fortawesome/free-solid-svg-icons';
+import { faUserEdit, faTrash, faReply, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { nanoid } from 'nanoid';
 import axios from 'axios';
 import { Formik, Field, ErrorMessage } from 'formik';
@@ -149,13 +149,8 @@ function Select(){
             return
         }
         const searchResult = paginatedData.filter(datas => 
-            datas.name.toLowerCase().startsWith(e.target.value.toLowerCase()) ||
-            datas.gender.toLowerCase().startsWith(e.target.value.toLowerCase()) ||
-            datas.alamat.toLowerCase().startsWith(e.target.value.toLowerCase())
+            datas.name.toLowerCase().startsWith(e.target.value.toLowerCase())
         )
-        // const startIndex = (currentPage - 1) * itemPerPages
-        // const paginatedPost = _(searchResult).slice(startIndex).take(itemPerPages).value()
-        // setPaginatedData(paginatedPost)
         setPaginatedData(searchResult);
     }
 //FORMIK
@@ -200,10 +195,12 @@ function Select(){
     const add_button = {marginBottom:'10px'}
     const pagination_style = {display:'flex', justifyContent:'flex-end'}
     const toggle_switch = {marginLeft:'auto', marginRight:'auto'}
-    const row_pages = {marginTop:'-15px'}
-    const dataPages = {marginLeft:'-60px'}
-    const jumlah_dataPages = {marginLeft:'-70px'}
+    const data_page = {display:'flex'}
+    const data_pages = {display:'flex', marginTop:'-15px'}
+    const titik = {marginRight:'10px'}
     const search_input = {marginBottom:'10px'}
+    const fa_search = {position:'absolute', marginTop:'12px', marginLeft:'-8px', color:'#99A799', fontSize:'15px'}
+    const input_search = {paddingLeft:'40px'}
 
 
 
@@ -217,32 +214,34 @@ function Select(){
                 </div>
 
                 <div className='data-pages'>
-                    <Row>
-                        <Col md={2}>
-                            <p>Jumlah Data</p>
-                        </Col>
-                        <Col style={dataPages} md={1}>
-                            <p>:</p>
-                        </Col>
-                        <Col md={2}>
-                            <p style={jumlah_dataPages}>{jumlah_data} Data</p>
-                        </Col>
-                    </Row>
-                    <Row style={row_pages}>
-                        <Col md={2}>
-                            <p>Pages</p>
-                        </Col>
-                        <Col style={dataPages} md={1}>
-                            <p>:</p>
-                        </Col>
-                        <Col md={2}>
-                            <p style={jumlah_dataPages}>{onclick_page} - {jumlah_page} Page</p>
-                        </Col>
-                    </Row>
+                    <div style={data_page}>
+                        <div>
+                            <p style={{marginRight:'34px'}}>Jumlah Data</p>
+                        </div>
+                        <div>
+                            <p style={titik}>:</p>
+                        </div>
+                        <div>
+                            <p>{jumlah_data} Data</p>
+                        </div>
+                    </div>
+                    <div style={data_pages}>
+                        <div>
+                            <p style={{marginRight:'80px'}}>Pages</p>
+                        </div>
+                        <div>
+                            <p style={titik}>:</p>
+                        </div>
+                        <div>
+                            <p>{onclick_page} - {jumlah_page} Page</p>
+                        </div>
+                    </div>
                 </div>
 
                 <div style={search_input}>
+                    <FontAwesomeIcon style={fa_search} icon={faSearch}/>
                     <input 
+                        style={input_search}
                         className='form-control'
                         type='text'
                         name='search'

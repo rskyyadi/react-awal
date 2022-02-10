@@ -69,7 +69,7 @@
 
 .image-text img{
     width: 140px;
-    margin-left: -45px;
+    margin-left: -30px;
 }
 .image-text{
     display: flex;
@@ -92,7 +92,7 @@ header .image-text .image{
 .header-text{
     display: flex;
     flex-direction: column;
-    margin-left: -50px;
+    margin-left: -30px;
 }
 .nama{
     font-weight: 600;
@@ -178,6 +178,7 @@ li{
 .item-icon{
     font-size: 20px;
     margin-left: 10px;
+    margin-right: 10px;
 }
 .title-close{
     opacity: 0;
