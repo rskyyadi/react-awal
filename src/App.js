@@ -10,7 +10,8 @@ import sidebarUtama from '../src/pages/Home/dasboardUtama';
 // import contohSatu from '../src/pages/Home/contohSatu';
 import biodata from '../src/pages/Home/biodata';
 import selectFormik from '../src/pages/Home/selectFormik';
-import perpustakaan from '../src/pages/Home/perpustakaan';
+// import perpustakaan from '../src/pages/Home/perpustakaan';
+import pageTable from '../src/pages/Home/Folder-Satu/PageTable';
 import SidebarDua from '../src/pages/sidebar/sidebar_2';
 
 //membuat fungsi
@@ -40,7 +41,7 @@ function App (){
             <Route path='/' exact component={sidebarUtama} />
             <Route path='/reports' component={utama} />
             <Route path='/product' component={dashboard} />
-            <Route path='/team' component={perpustakaan} />
+            <Route path='/team' component={pageTable} />
             <Route path='/messages' component={biodata} />
             <Route path='/support' component={selectFormik} />
           </Switch>

@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Table, Button, Modal } from 'react-bootstrap';
+import { Card, Table, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserEdit, faTrash, faReply, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faUserEdit, faTrash, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { nanoid } from 'nanoid';
 import axios from 'axios';
-import { Formik, Field, ErrorMessage } from 'formik';
+import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import { Switch } from '@headlessui/react';
-import '../sidebar/sidebar_2.css';
+import './PageTable.css';
 
 
 
@@ -18,8 +18,6 @@ function Select(){
     const [currentPage, setCurentPage] = useState(1)
     const [isEdit, setIsEdit] = useState(false)
     const [indexEdit, setIndexEdit] = useState(null)
-//MODAL
-    const [show, setShow] = useState(false)
 //CREATE
     const [add, setAdd] = useState({
         name:'',
@@ -93,7 +91,6 @@ function Select(){
         }
         const saveAs = [...data, newName]
         setData(saveAs)
-        setShow(false)
         setAdd({
             name:'',
             gender:'',
@@ -108,7 +105,6 @@ function Select(){
         const finds = data.find((datas) => datas.id === id)
         setIsEdit(true)
         setIndexEdit(id)
-        setShow(true)
         setAdd(finds)
     }
     const editSubmit = (values) => {
@@ -129,7 +125,6 @@ function Select(){
         setPaginatedData(paginatedPost)
 
         setIsEdit(false)
-        setShow(false)
         setIndexEdit('')
         setData(maping)
         setAdd({
@@ -191,7 +186,6 @@ function Select(){
 //STYLE CSS
     const side_open = {marginTop:'-550px', marginLeft:'auto', marginRight:'auto', position:'relative'}
     const card = {width:'95%'}
-    const add_button = {marginBottom:'10px'}
     const pagination_style = {display:'flex', justifyContent:'flex-end'}
     const toggle_switch = {marginLeft:'auto', marginRight:'auto'}
     const data_page = {display:'flex'}
@@ -200,17 +194,15 @@ function Select(){
     const search_input = {marginBottom:'10px'}
     const fa_search = {position:'absolute', marginTop:'12px', marginLeft:'-8px', color:'#99A799', fontSize:'15px'}
     const input_search = {paddingLeft:'40px'}
+    const tabelDraw = {padding:'1px'}
+    const field = {marginBottom:'0px'}
+    const buttonField = {width:'100%', marginBottom:'0px', marginTop:'0px'}
 
 
 
     return(
         <div className='container' style={side_open}>
             <Card style={card}>
-                <div style={add_button}>
-                    <Button variant="primary" onClick={() => setShow(true)}>
-                        + Tambah Data
-                    </Button>
-                </div>
 
                 <div className='data-pages'>
                     <div style={data_page}>
@@ -249,78 +241,6 @@ function Select(){
                     />
                 </div>
 
-                <Modal
-                    show={show}
-                    onHide={() => setShow(false)}
-                    backdrop="static"
-                    keyboard={false}>
-
-                    <Formik
-                        initialValues={initialVal}
-                        validationSchema={validation}
-                        onSubmit={submit}>
-
-                        {({touched, errors, isSubmitting, values, handleChange, handleSubmit}) => (
-
-                        <form onSubmit={handleSubmit}>
-                            <Modal.Header closeButton>
-                                <Modal.Title>Tambah</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <label>Nama</label>
-                                <Field  
-                                    className={`form-control ${touched.name && errors.name ? "is-invalid" : ""}`}
-                                    name='name'
-                                    type='text'
-                                    required='required'
-                                    placeholder='Masukkan Nama...'
-                                    value={values.name}
-                                    onChange={handleChange}
-                                />
-                                <p className='text-danger'>
-                                    <ErrorMessage name='name' className='error'/>
-                                </p>
-                                <label>Gender</label>
-                                <Field
-                                    className={`form-select ${touched.gender && errors.gender ? "is-invalid" : ""}`}
-                                    name='gender'
-                                    component='select'
-                                    value={values.gender}
-                                    onChange={handleChange}>
-                                    
-                                    <option value=''>--Pilih Gender--</option>
-                                    <option value='Pria'>Pria</option>
-                                    <option value='Wanita'>Wanita</option>
-                                </Field>
-                                <p className='text-danger'>
-                                    <ErrorMessage name='gender' className='error'/>
-                                </p>
-                                <label>Alamat</label>
-                                <Field
-                                    as='textarea'  
-                                    className={`form-control ${touched.alamat && errors.alamat ? "is-invalid" : ""}`}
-                                    name='alamat'
-                                    type='text'
-                                    required='required'
-                                    placeholder='Masukkan Alamat...'
-                                    value={values.alamat}
-                                    onChange={handleChange}
-                                />
-                                <p className='text-danger'>
-                                    <ErrorMessage name='alamat' className='error'/>
-                                </p>
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <Button variant="secondary" onClick={() => setShow(false)}>
-                                    <FontAwesomeIcon icon={faReply}/>
-                                </Button>
-                                <Button type='submit' disabled={isSubmitting} variant="primary">+</Button>
-                            </Modal.Footer>
-                        </form>
-                        )}
-                    </Formik>
-                </Modal>
-
                <from>
                     <Table bordered hover>
                         <thead>
@@ -333,11 +253,81 @@ function Select(){
                             </tr>
                         </thead>
                         <tbody>
+                            <Formik
+                                initialValues={initialVal}
+                                validationSchema={validation}
+                                onSubmit={submit}>
+
+                                {({touched, errors, isSubmitting, values, handleChange, handleSubmit}) => (
+                                    
+                                <tr onSubmit={handleSubmit}>
+                                    <td>
+                                        
+                                    </td>
+                                    <td style={tabelDraw}>
+                                        <Field  
+                                            className={`form-control ${touched.name && errors.name ? "is-invalid" : ""}`}
+                                            style={field}
+                                            name='name'
+                                            type='text'
+                                            required='required'
+                                            placeholder='Masukkan Nama...'
+                                            value={values.name}
+                                            onChange={handleChange}
+                                        />
+                                        {/* <p className='text-danger'>
+                                            <ErrorMessage name='name' className='error'/>
+                                        </p> */}
+                                    </td>
+                                    <td style={tabelDraw}>
+                                        <Field
+                                            className={`form-select ${touched.gender && errors.gender ? "is-invalid" : ""}`}
+                                            style={field}
+                                            name='gender'
+                                            component='select'
+                                            value={values.gender}
+                                            onChange={handleChange}>
+                                            
+                                            <option value=''>--Pilih Gender--</option>
+                                            <option value='Pria'>Pria</option>
+                                            <option value='Wanita'>Wanita</option>
+                                        </Field>
+                                        {/* <p className='text-danger'>
+                                            <ErrorMessage name='gender' className='error'/>
+                                        </p> */}
+                                    </td>
+                                    <td style={tabelDraw}>
+                                        <Field
+                                            className={`form-control ${touched.alamat && errors.alamat ? "is-invalid" : ""}`}
+                                            style={field}
+                                            name='alamat'
+                                            type='text'
+                                            required='required'
+                                            placeholder='Masukkan Alamat...'
+                                            value={values.alamat}
+                                            onChange={handleChange}
+                                        />
+                                        {/* <p className='text-danger'>
+                                            <ErrorMessage name='alamat' className='error'/>
+                                        </p> */}
+                                    </td>
+                                    <td className='text-center' style={tabelDraw}>
+                                        <Button 
+                                            type='submit' 
+                                            disabled={isSubmitting} 
+                                            style={buttonField}
+                                            variant="primary">
+                                            +
+                                        </Button>
+                                    </td>
+                                </tr>
+                                )}
+                            </Formik>
                             {
                                 paginatedData.map((datas, index) => {
                                     return(
                                         <tr key={datas.id}>
-                                            <td>{currentPage * itemPerPages + index - itemPerPages + 1}</td>
+                                            <td className='text-center'>{currentPage * itemPerPages + index - itemPerPages + 1}</td>
                                             <td>{datas.name}</td>
                                             <td>{datas.gender}</td>
                                             <td>{datas.alamat}</td>
