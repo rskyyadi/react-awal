@@ -153,7 +153,7 @@ function Select(){
         gender: isEdit ? add.gender : '',
         alamat: isEdit ? add.alamat : ''
     }
-    const submit = (values) => {
+    const onSubmit = (values) => {
         console.log(values)
 
         if(isEdit){
@@ -197,6 +197,8 @@ function Select(){
     const tabelDraw = {padding:'1px'}
     const field = {marginBottom:'0px'}
     const buttonField = {width:'100%', marginBottom:'0px', marginTop:'0px'}
+    const jumlahData = {marginRight:'34px'}
+    const style_pages = {marginRight:'80px'}
 
 
 
@@ -206,26 +208,14 @@ function Select(){
 
                 <div className='data-pages'>
                     <div style={data_page}>
-                        <div>
-                            <p style={{marginRight:'34px'}}>Jumlah Data</p>
-                        </div>
-                        <div>
-                            <p style={titik}>:</p>
-                        </div>
-                        <div>
-                            <p>{jumlah_data} Data</p>
-                        </div>
+                        <div> <p style={jumlahData}>Jumlah Data</p> </div>
+                        <div> <p style={titik}>:</p> </div>
+                        <div> <p>{jumlah_data} Data</p> </div>
                     </div>
                     <div style={data_pages}>
-                        <div>
-                            <p style={{marginRight:'80px'}}>Pages</p>
-                        </div>
-                        <div>
-                            <p style={titik}>:</p>
-                        </div>
-                        <div>
-                            <p>{onclick_page} - {jumlah_page} Page</p>
-                        </div>
+                        <div> <p style={style_pages}>Pages</p> </div>
+                        <div> <p style={titik}>:</p> </div>
+                        <div> <p>{onclick_page} - {jumlah_page} Page</p> </div>
                     </div>
                 </div>
 
@@ -241,7 +231,15 @@ function Select(){
                     />
                 </div>
 
-               <from>
+                <Formik
+                    initialValues={initialVal}
+                    validationSchema={validation}
+                    onSubmit={onSubmit}>
+
+                    {({touched, errors, values, handleChange, handleSubmit}) => (
+
+                    <form onSubmit={handleSubmit}>
+
                     <Table bordered hover>
                         <thead>
                             <tr className='text-center'>
@@ -253,76 +251,64 @@ function Select(){
                             </tr>
                         </thead>
                         <tbody>
-                            <Formik
-                                initialValues={initialVal}
-                                validationSchema={validation}
-                                onSubmit={submit}>
-
-                                {({touched, errors, isSubmitting, values, handleChange, handleSubmit}) => (
-                                    
-                                <tr onSubmit={handleSubmit}>
-                                    <td>
+                            <tr>
+                                <td></td>
+                                <td style={tabelDraw}>
+                                    <Field  
+                                        className={`form-control ${touched.name && errors.name ? "is-invalid" : ""}`}
+                                        style={field}
+                                        name='name'
+                                        type='text'
+                                        required='required'
+                                        placeholder='Masukkan Nama...'
+                                        value={values.name}
+                                        onChange={handleChange}
+                                    />
+                                    {/* <p className='text-danger'>
+                                        <ErrorMessage name='name' className='error'/>
+                                    </p> */}
+                                </td>
+                                <td style={tabelDraw}>
+                                    <Field
+                                        className={`form-select ${touched.gender && errors.gender ? "is-invalid" : ""}`}
+                                        style={field}
+                                        name='gender'
+                                        component='select'
+                                        value={values.gender}
+                                        onChange={handleChange}>
                                         
-                                    </td>
-                                    <td style={tabelDraw}>
-                                        <Field  
-                                            className={`form-control ${touched.name && errors.name ? "is-invalid" : ""}`}
-                                            style={field}
-                                            name='name'
-                                            type='text'
-                                            required='required'
-                                            placeholder='Masukkan Nama...'
-                                            value={values.name}
-                                            onChange={handleChange}
-                                        />
-                                        {/* <p className='text-danger'>
-                                            <ErrorMessage name='name' className='error'/>
-                                        </p> */}
-                                    </td>
-                                    <td style={tabelDraw}>
-                                        <Field
-                                            className={`form-select ${touched.gender && errors.gender ? "is-invalid" : ""}`}
-                                            style={field}
-                                            name='gender'
-                                            component='select'
-                                            value={values.gender}
-                                            onChange={handleChange}>
-                                            
-                                            <option value=''>--Pilih Gender--</option>
-                                            <option value='Pria'>Pria</option>
-                                            <option value='Wanita'>Wanita</option>
-                                        </Field>
-                                        {/* <p className='text-danger'>
-                                            <ErrorMessage name='gender' className='error'/>
-                                        </p> */}
-                                    </td>
-                                    <td style={tabelDraw}>
-                                        <Field
-                                            className={`form-control ${touched.alamat && errors.alamat ? "is-invalid" : ""}`}
-                                            style={field}
-                                            name='alamat'
-                                            type='text'
-                                            required='required'
-                                            placeholder='Masukkan Alamat...'
-                                            value={values.alamat}
-                                            onChange={handleChange}
-                                        />
-                                        {/* <p className='text-danger'>
-                                            <ErrorMessage name='alamat' className='error'/>
-                                        </p> */}
-                                    </td>
-                                    <td className='text-center' style={tabelDraw}>
-                                        <Button 
-                                            type='submit' 
-                                            disabled={isSubmitting} 
-                                            style={buttonField}
-                                            variant="primary">
-                                            +
-                                        </Button>
-                                    </td>
-                                </tr>
-                                )}
-                            </Formik>
+                                        <option value=''>--Pilih Gender--</option>
+                                        <option value='Pria'>Pria</option>
+                                        <option value='Wanita'>Wanita</option>
+                                    </Field>
+                                    {/* <p className='text-danger'>
+                                        <ErrorMessage name='gender' className='error'/>
+                                    </p> */}
+                                </td>
+                                <td style={tabelDraw}>
+                                    <Field
+                                        className={`form-control ${touched.alamat && errors.alamat ? "is-invalid" : ""}`}
+                                        style={field}
+                                        name='alamat'
+                                        type='text'
+                                        required='required'
+                                        placeholder='Masukkan Alamat...'
+                                        value={values.alamat}
+                                        onChange={handleChange}
+                                    />
+                                    {/* <p className='text-danger'>
+                                        <ErrorMessage name='alamat' className='error'/>
+                                    </p> */}
+                                </td>
+                                <td className='text-center' style={tabelDraw}>
+                                    <Button 
+                                        type='submit'
+                                        style={buttonField}
+                                        variant="primary">
+                                        +
+                                    </Button>
+                                </td>
+                            </tr>
                             {
                                 paginatedData.map((datas, index) => {
                                     return(
@@ -372,7 +358,9 @@ function Select(){
                             }
                         </tbody>
                     </Table>
-                </from> 
+                    </form> 
+                    )}
+                </Formik>
                 <nav style={pagination_style}>
                     <ul className='pagination' style={{cursor:'pointer'}}>
                         <li className='page-item'>
