@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Table, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserEdit, faTrash, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faUserEdit, faTrash, faSearch, faCheck, faReply } from '@fortawesome/free-solid-svg-icons';
 import { nanoid } from 'nanoid';
 import axios from 'axios';
 import { Formik, Field } from 'formik';
@@ -9,6 +9,7 @@ import * as Yup from 'yup';
 import _ from 'lodash';
 import { Switch } from '@headlessui/react';
 import './PageTable.css';
+import ReactLoading from "react-loading";
 
 
 
@@ -18,6 +19,7 @@ function Select(){
     const [currentPage, setCurentPage] = useState(1)
     const [isEdit, setIsEdit] = useState(false)
     const [indexEdit, setIndexEdit] = useState(null)
+    const [loading, setLoading] = useState(false)
 //CREATE
     const [add, setAdd] = useState({
         name:'',
@@ -26,6 +28,7 @@ function Select(){
     })
 //GET DATA
     const getData = async () => {
+        setLoading(true)
         try {
             const response = await axios.get('https://jsonplaceholder.typicode.com/users')
             //  setData(response.data)
@@ -39,9 +42,11 @@ function Select(){
                 }
             })
             setData(map)
+            setLoading(false)
             setPaginatedData(_(response.data).slice(0).take(itemPerPages).value())
             
         } catch(e) {
+            setLoading(true)
             console.log(e.message)
         }
     }
@@ -94,18 +99,20 @@ function Select(){
         setAdd({
             name:'',
             gender:'',
-            alamant:''
+            alamat:''
         })
         const startIndex = (currentPage - 1) * itemPerPages
         const paginatedPost = _(saveAs).slice(startIndex).take(itemPerPages).value()
         setPaginatedData(paginatedPost)
     }
 //EDIT DATA
-    const editData = (id) => {
+    const editData = (id, index) => {
         const finds = data.find((datas) => datas.id === id)
         setIsEdit(true)
         setIndexEdit(id)
-        setAdd(finds)
+        setAdd({...finds, index})
+
+        console.log(finds)
     }
     const editSubmit = (values) => {
 
@@ -130,7 +137,7 @@ function Select(){
         setAdd({
             name:'',
             gender:'',
-            alamant:''
+            alamat:''
         })
     }
 //SEARCH
@@ -148,12 +155,12 @@ function Select(){
         setPaginatedData(searchResult);
     }
 //FORMIK
-    const initialVal = {
+    const inisial = {
         name: isEdit ? add.name : '',
         gender: isEdit ? add.gender : '',
         alamat: isEdit ? add.alamat : ''
     }
-    const onSubmit = (values) => {
+    const onSubmit = (values, {resetForm}) => {
         console.log(values)
 
         if(isEdit){
@@ -161,6 +168,13 @@ function Select(){
         }else{
             createSubmit(values)
         }
+        resetForm({
+            values: {
+                name:'',
+                gender:'',
+                alamat:''
+            }
+        })
     }
 //YUP
     const validation = Yup.object({
@@ -184,12 +198,12 @@ function Select(){
         setPaginatedData(paginatedPost)
     }
 //STYLE CSS
-    const side_open = {marginTop:'-550px', marginLeft:'auto', marginRight:'auto', position:'relative'}
+    const side_open = {marginTop:'-500px', marginLeft:'13vw', position:'relative'}
     const card = {width:'95%'}
-    const pagination_style = {display:'flex', justifyContent:'flex-end'}
+    const pagination_style = {display:'flex', justifyContent:'space-between',alignItems:'baseline'}
     const toggle_switch = {marginLeft:'auto', marginRight:'auto'}
     const data_page = {display:'flex'}
-    const data_pages = {display:'flex', marginTop:'-15px'}
+    const data_pages = {display:'flex'}
     const titik = {marginRight:'10px'}
     const search_input = {marginBottom:'10px'}
     const fa_search = {position:'absolute', marginTop:'12px', marginLeft:'-8px', color:'#99A799', fontSize:'15px'}
@@ -197,8 +211,15 @@ function Select(){
     const tabelDraw = {padding:'1px'}
     const field = {marginBottom:'0px'}
     const buttonField = {width:'100%', marginBottom:'0px', marginTop:'0px'}
-    const jumlahData = {marginRight:'34px'}
-    const style_pages = {marginRight:'80px'}
+    const buttonField1 = {width:'48%', marginBottom:'0px', marginTop:'0px'}
+    const buttonField2 = {width:'48%', marginBottom:'0px', marginTop:'0px', marginLeft:'4px'}
+    const jumlahData = {marginRight:'24px'}
+    const style_pages = {marginRight:'8px'}
+    const style_dari = {marginRight:'8px', marginLeft:'8px'}
+    const react_loading = {display:'flex', justifyContent:'center', alignItems:'baseline', position:'absolute', width:'100%'}
+    const loading_icon = {height: "35px", width: "35px"}
+    const tr_hilang = {display:'none'}
+    const tr_tampil = {marginTop:0}
 
 
 
@@ -211,11 +232,6 @@ function Select(){
                         <div> <p style={jumlahData}>Jumlah Data</p> </div>
                         <div> <p style={titik}>:</p> </div>
                         <div> <p>{jumlah_data} Data</p> </div>
-                    </div>
-                    <div style={data_pages}>
-                        <div> <p style={style_pages}>Pages</p> </div>
-                        <div> <p style={titik}>:</p> </div>
-                        <div> <p>{onclick_page} - {jumlah_page} Page</p> </div>
                     </div>
                 </div>
 
@@ -232,7 +248,8 @@ function Select(){
                 </div>
 
                 <Formik
-                    initialValues={initialVal}
+                    enableReinitialize
+                    initialValues={inisial}
                     validationSchema={validation}
                     onSubmit={onSubmit}>
 
@@ -240,128 +257,219 @@ function Select(){
 
                     <form onSubmit={handleSubmit}>
 
-                    <Table bordered hover>
-                        <thead>
-                            <tr className='text-center'>
-                                <th>No</th>
-                                <th>Nama</th>
-                                <th>Gender</th>
-                                <th>Alamat</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td></td>
-                                <td style={tabelDraw}>
-                                    <Field  
-                                        className={`form-control ${touched.name && errors.name ? "is-invalid" : ""}`}
-                                        style={field}
-                                        name='name'
-                                        type='text'
-                                        required='required'
-                                        placeholder='Masukkan Nama...'
-                                        value={values.name}
-                                        onChange={handleChange}
-                                    />
-                                    {/* <p className='text-danger'>
-                                        <ErrorMessage name='name' className='error'/>
-                                    </p> */}
-                                </td>
-                                <td style={tabelDraw}>
-                                    <Field
-                                        className={`form-select ${touched.gender && errors.gender ? "is-invalid" : ""}`}
-                                        style={field}
-                                        name='gender'
-                                        component='select'
-                                        value={values.gender}
-                                        onChange={handleChange}>
-                                        
-                                        <option value=''>--Pilih Gender--</option>
-                                        <option value='Pria'>Pria</option>
-                                        <option value='Wanita'>Wanita</option>
-                                    </Field>
-                                    {/* <p className='text-danger'>
-                                        <ErrorMessage name='gender' className='error'/>
-                                    </p> */}
-                                </td>
-                                <td style={tabelDraw}>
-                                    <Field
-                                        className={`form-control ${touched.alamat && errors.alamat ? "is-invalid" : ""}`}
-                                        style={field}
-                                        name='alamat'
-                                        type='text'
-                                        required='required'
-                                        placeholder='Masukkan Alamat...'
-                                        value={values.alamat}
-                                        onChange={handleChange}
-                                    />
-                                    {/* <p className='text-danger'>
-                                        <ErrorMessage name='alamat' className='error'/>
-                                    </p> */}
-                                </td>
-                                <td className='text-center' style={tabelDraw}>
-                                    <Button 
-                                        type='submit'
-                                        style={buttonField}
-                                        variant="primary">
-                                        +
-                                    </Button>
-                                </td>
-                            </tr>
-                            {
-                                paginatedData.map((datas, index) => {
-                                    return(
-                                        <tr key={datas.id}>
-                                            <td className='text-center'>{currentPage * itemPerPages + index - itemPerPages + 1}</td>
-                                            <td>{datas.name}</td>
-                                            <td>{datas.gender}</td>
-                                            <td>{datas.alamat}</td>
-                                            <td style={{width:'120px'}}className='text-center'>
-                                                <Switch
-                                                    style={toggle_switch}
-                                                    checked={datas.checked}
-                                                    onChange={() => toggler(datas.id)}
-                                                    className={`${datas.checked ? 'background-satu' : 'background-dua'} switch-toggle`}>
-                            
-                                                    <span className="sr-only">Use setting</span>
-                                                    <span 
-                                                        aria-hidden="true" 
-                                                        className={`${datas.checked ? 'button-satu' : 'button-dua'} switch-dua`}
-                                                    />
-                                                </Switch>                      
-                                                {
-                                                    datas.checked ? 
+                        <Table bordered hover>
+                            <thead>
+                                <tr className='text-center'>
+                                    <th>No</th>
+                                    <th>Nama</th>
+                                    <th>Gender</th>
+                                    <th>Alamat</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style={isEdit ? tr_hilang : tr_tampil}>
+                                    <td></td>
+                                    <td style={tabelDraw}>
+                                        <Field  
+                                            className={`form-control ${touched.name && errors.name ? "is-invalid" : ""}`}
+                                            style={field}
+                                            autoComplete='off'
+                                            name='name'
+                                            type='text'
+                                            required='required'
+                                            placeholder='Masukkan Nama...'
+                                            value={values.name}
+                                            onChange={handleChange}
+                                        />
+                                        {/* <p className='text-danger'>
+                                            <ErrorMessage name='name' className='error'/>
+                                        </p> */}
+                                    </td>
+                                    <td style={tabelDraw}>
+                                        <Field
+                                            className={`form-select ${touched.gender && errors.gender ? "is-invalid" : ""}`}
+                                            style={field}
+                                            autoComplete='off'
+                                            name='gender'
+                                            component='select'
+                                            value={values.gender}
+                                            onChange={handleChange}>
+                                            
+                                            <option value=''>--Pilih Gender--</option>
+                                            <option value='Pria'>Pria</option>
+                                            <option value='Wanita'>Wanita</option>
+                                        </Field>
+                                        {/* <p className='text-danger'>
+                                            <ErrorMessage name='gender' className='error'/>
+                                        </p> */}
+                                    </td>
+                                    <td style={tabelDraw}>
+                                        <Field
+                                            className={`form-control ${touched.alamat && errors.alamat ? "is-invalid" : ""}`}
+                                            style={field}
+                                            autoComplete='off'
+                                            name='alamat'
+                                            type='text'
+                                            required='required'
+                                            placeholder='Masukkan Alamat...'
+                                            value={values.alamat}
+                                            onChange={handleChange}
+                                        />
+                                        {/* <p className='text-danger'>
+                                            <ErrorMessage name='alamat' className='error'/>
+                                        </p> */}
+                                    </td>
+                                    <td className='text-center' style={tabelDraw}>
+                                        <Button 
+                                            type='submit'
+                                            style={buttonField}
+                                            variant="primary">
+                                            +
+                                        </Button>
+                                    </td>
+                                </tr>
+                                { loading ? 
+
+                                    <div style={react_loading}>
+                                        <ReactLoading
+                                            style={loading_icon}
+                                            type="spin"
+                                            color="#fff"
+                                        />
+                                        <p style={{marginLeft:'-7px'}}>Memuat...</p>
+                                    </div>
+                                    :
+                                    paginatedData.map((datas, index) => {
+                                        return(
+                                            <>
+                                            {
+                                                (isEdit && add.index === index)
+                                                ?
+                                                <tr>
+                                                    <td className='text-center'>
+                                                        {currentPage * itemPerPages + index - itemPerPages + 1}
+                                                    </td>
+                                                    <td style={tabelDraw}>
+                                                        <Field  
+                                                            className={`form-control ${touched.name && errors.name ? "is-invalid" : ""}`}
+                                                            style={field}
+                                                            autoComplete='off'
+                                                            name='name'
+                                                            type='text'
+                                                            required='required'
+                                                            placeholder='Masukkan Nama...'
+                                                            value={values.name}
+                                                            onChange={handleChange}
+                                                        />
+                                                    </td>
+                                                    <td style={tabelDraw}>
+                                                        <Field
+                                                            className={`form-select ${touched.gender && errors.gender ? "is-invalid" : ""}`}
+                                                            style={field}
+                                                            autoComplete='off'
+                                                            name='gender'
+                                                            component='select'
+                                                            value={values.gender}
+                                                            onChange={handleChange}>
                                                             
-                                                    <div className='button-flex'>
-                                                        <Button variant='warning' 
-                                                            className='text-white'
-                                                            onClick={() => {
-                                                                editData(datas.id)
-                                                                setIsEdit(true)
-                                                                setAdd(datas)}}>
-                                                            <FontAwesomeIcon icon={faUserEdit}/>
+                                                            <option value=''>--Pilih Gender--</option>
+                                                            <option value='Pria'>Pria</option>
+                                                            <option value='Wanita'>Wanita</option>
+                                                        </Field>
+                                                    </td>
+                                                    <td style={tabelDraw}>
+                                                        <Field
+                                                            className={`form-control ${touched.alamat && errors.alamat ? "is-invalid" : ""}`}
+                                                            style={field}
+                                                            autoComplete='off'
+                                                            name='alamat'
+                                                            type='text'
+                                                            required='required'
+                                                            placeholder='Masukkan Alamat...'
+                                                            value={values.alamat}
+                                                            onChange={handleChange}
+                                                        />
+                                                    </td>
+                                                    <td className='text-center' style={tabelDraw}>
+                                                        <Button
+                                                            onClick={() => setIsEdit(false)}
+                                                            style={buttonField1}
+                                                            variant="danger">
+                                                            <FontAwesomeIcon icon={faReply}/>
                                                         </Button>
                                                         <Button 
-                                                            style={{marginLeft:'10px'}} 
-                                                            variant='danger' 
-                                                            onClick={() => deleteData(datas.id)}>
-                                                            <FontAwesomeIcon icon={faTrash}/>
+                                                            className='text-white'
+                                                            type='submit'
+                                                            style={buttonField2}
+                                                            variant="warning">
+                                                            <FontAwesomeIcon icon={faCheck}/>
                                                         </Button>
-                                                    </div> 
-                                                    : <span></span>
-                                                }
-                                            </td>
-                                        </tr>
-                                    )
-                                })
-                            }
-                        </tbody>
-                    </Table>
+                                                    </td>
+                                                </tr>
+                                                :
+                                                <tr key={datas.id}>
+                                                    <td className='text-center'>{currentPage * itemPerPages + index - itemPerPages + 1}</td>
+                                                    <td>{datas.name}</td>
+                                                    <td>{datas.gender}</td>
+                                                    <td>{datas.alamat}</td>
+                                                    <td style={{width:'120px'}}className='text-center'>
+                                                        <Switch
+                                                            style={toggle_switch}
+                                                            checked={datas.checked}
+                                                            onChange={() => toggler(datas.id)}
+                                                            className={`${datas.checked ? 'background-satu' : 'background-dua'} switch-toggle`}>
+                                    
+                                                            <span className="sr-only">Use setting</span>
+                                                            <span 
+                                                                aria-hidden="true" 
+                                                                className={`${datas.checked ? 'button-satu' : 'button-dua'} switch-dua`}
+                                                            />
+                                                        </Switch>                      
+                                                        {
+                                                            datas.checked ? 
+                                                                    
+                                                            <div className='button-flex'>
+                                                                <Button variant='warning' 
+                                                                    className='text-white'
+                                                                    onClick={() => {
+                                                                        editData(datas.id, index)
+                                                                        // setIsEdit(true)
+                                                                        // setAdd(datas)
+                                                                    }}>
+                                                                    <FontAwesomeIcon icon={faUserEdit}/>
+                                                                </Button>
+                                                                <Button 
+                                                                    style={{marginLeft:'10px'}} 
+                                                                    variant='danger' 
+                                                                    onClick={() => deleteData(datas.id)}>
+                                                                    <FontAwesomeIcon icon={faTrash}/>
+                                                                </Button>
+                                                            </div> 
+                                                            : <span></span>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }
+                                            </>
+                                        )
+                                    })
+                                }
+                            </tbody>
+                        </Table>
                     </form> 
                     )}
                 </Formik>
                 <nav style={pagination_style}>
+
+                    <div style={data_pages}>
+                        <p style={style_pages}>Menampilkan</p>
+                        <p>{onclick_page}</p>
+                        <p style={style_dari}>dari</p>
+                        <p style={style_pages}>{jumlah_page}</p>
+                        <p style={style_pages}>Page</p>
+                    </div>
+
                     <ul className='pagination' style={{cursor:'pointer'}}>
                         <li className='page-item'>
                             <button className='page-link' 

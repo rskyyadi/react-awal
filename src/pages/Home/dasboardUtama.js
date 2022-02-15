@@ -41,7 +41,7 @@ export default function Das() {
 
 
 //Style Css
-    const main_container = {marginLeft:'auto', marginRight:'auto'}
+    const main_container = {marginLeft:'auto', marginRight:'auto', marginTop:'-600px'}
     const container = {
         marginTop:'120px',
         marginRight:'auto',
