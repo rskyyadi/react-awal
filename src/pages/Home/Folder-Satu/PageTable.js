@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { Card, Table, Button } from 'react-bootstrap';
+import React, { useState, useEffect, Fragment } from 'react';
+import { Card, Table, Button, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserEdit, faTrash, faSearch, faCheck, faReply } from '@fortawesome/free-solid-svg-icons';
+import { faUserEdit, faTrash, faSearch, faCheck, faReply, faExclamationTriangle, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { nanoid } from 'nanoid';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import { Switch } from '@headlessui/react';
 import './PageTable.css';
 import ReactLoading from "react-loading";
+// import InputFields from './InputFields';
 
 
 
@@ -20,6 +22,7 @@ function Select(){
     const [isEdit, setIsEdit] = useState(false)
     const [indexEdit, setIndexEdit] = useState(null)
     const [loading, setLoading] = useState(false)
+    const [indexHapus, setIndexHapus] = useState([])
 //CREATE
     const [add, setAdd] = useState({
         name:'',
@@ -88,6 +91,14 @@ function Select(){
 //CREATE DATA
     const createSubmit = (values) => {
 
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Tambah Data Sukses',
+            text: 'Klik tombol untuk kembali !',
+            showConfirmButton: false,
+            timer: 1500
+          })
         const newName = {
             id: nanoid(),
             name: values.name,
@@ -111,11 +122,17 @@ function Select(){
         setIsEdit(true)
         setIndexEdit(id)
         setAdd({...finds, index})
-
-        console.log(finds)
     }
     const editSubmit = (values) => {
 
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Edit Data Sukses',
+            text: 'Klik tombol untuk kembali !',
+            showConfirmButton: false,
+            timer: 1500
+          })
         const maping = data.map((val) => {
             if(val.id === indexEdit){
                 return{
@@ -191,11 +208,34 @@ function Select(){
     })
 //DELETE
     const deleteData = (id) => {
+
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Hapus Data Sukses',
+            text: 'Klik tombol untuk kembali !',
+            showConfirmButton: false,
+            timer: 1500
+          })
         const filters = data.filter(datas => datas.id !== id)
         setData(filters)
+        deleteKeluar(true)
         const startIndex = (currentPage - 1) * itemPerPages
         const paginatedPost = _(filters).slice(startIndex).take(itemPerPages).value()
         setPaginatedData(paginatedPost)
+    }
+//DELETE DETAIL
+    const deleteDetail = (id) => {
+        const delete_detail = data.find((datas) => datas.id === id)
+        setAdd(delete_detail)
+    }
+//MODAL DELETE
+    const [hapusShow, setHapusShow] = useState(false);
+    
+    const deleteKeluar = () => setHapusShow(false);
+    const deleteMasuk = (id) => {
+        setHapusShow(true)
+        setIndexHapus(id)
     }
 //STYLE CSS
     const side_open = {marginTop:'-500px', marginLeft:'13vw', position:'relative'}
@@ -220,6 +260,13 @@ function Select(){
     const loading_icon = {height: "35px", width: "35px"}
     const tr_hilang = {display:'none'}
     const tr_tampil = {marginTop:0}
+    const png_loading = {marginLeft:'-7px'}
+    const border = {border:'1px solid red', borderRadius:'4px'}
+    const fa_delete = {color:'red', width:'100%', fontSize:'100px', marginTop:'25px', marginBottom:'15px'}
+    const text_delete = {textAlign:'center', color:'red', fontSize:'13px'}
+    const text_delete2 = {textAlign:'center', marginTop:'-12px'}
+    const delete_name = {textAlign:'center', fontSize:'29px', marginTop:'-10px'}
+    const button_delete = {display:'flex', justifyContent:'center', marginBottom:'25px'}
 
 
 
@@ -268,6 +315,9 @@ function Select(){
                                 </tr>
                             </thead>
                             <tbody>
+                                {/* <Fragment>
+                                    <InputFields onChange={handleChange} onSubmit={handleSubmit} />
+                                </Fragment> */}
                                 <tr style={isEdit ? tr_hilang : tr_tampil}>
                                     <td></td>
                                     <td style={tabelDraw}>
@@ -282,9 +332,6 @@ function Select(){
                                             value={values.name}
                                             onChange={handleChange}
                                         />
-                                        {/* <p className='text-danger'>
-                                            <ErrorMessage name='name' className='error'/>
-                                        </p> */}
                                     </td>
                                     <td style={tabelDraw}>
                                         <Field
@@ -300,9 +347,6 @@ function Select(){
                                             <option value='Pria'>Pria</option>
                                             <option value='Wanita'>Wanita</option>
                                         </Field>
-                                        {/* <p className='text-danger'>
-                                            <ErrorMessage name='gender' className='error'/>
-                                        </p> */}
                                     </td>
                                     <td style={tabelDraw}>
                                         <Field
@@ -316,9 +360,6 @@ function Select(){
                                             value={values.alamat}
                                             onChange={handleChange}
                                         />
-                                        {/* <p className='text-danger'>
-                                            <ErrorMessage name='alamat' className='error'/>
-                                        </p> */}
                                     </td>
                                     <td className='text-center' style={tabelDraw}>
                                         <Button 
@@ -329,7 +370,8 @@ function Select(){
                                         </Button>
                                     </td>
                                 </tr>
-                                { loading ? 
+                                { 
+                                    loading ? 
 
                                     <div style={react_loading}>
                                         <ReactLoading
@@ -337,7 +379,7 @@ function Select(){
                                             type="spin"
                                             color="#fff"
                                         />
-                                        <p style={{marginLeft:'-7px'}}>Memuat...</p>
+                                        <p style={png_loading}>Memuat...</p>
                                     </div>
                                     :
                                     paginatedData.map((datas, index) => {
@@ -393,7 +435,7 @@ function Select(){
                                                     </td>
                                                     <td className='text-center' style={tabelDraw}>
                                                         <Button
-                                                            onClick={() => setIsEdit(false)}
+                                                            onClick={() => setIsEdit(false) && toggler(datas.id)}
                                                             style={buttonField1}
                                                             variant="danger">
                                                             <FontAwesomeIcon icon={faReply}/>
@@ -442,7 +484,7 @@ function Select(){
                                                                 <Button 
                                                                     style={{marginLeft:'10px'}} 
                                                                     variant='danger' 
-                                                                    onClick={() => deleteData(datas.id)}>
+                                                                    onClick={() => deleteMasuk(datas.id) ?? deleteDetail(datas.id)}>
                                                                     <FontAwesomeIcon icon={faTrash}/>
                                                                 </Button>
                                                             </div> 
@@ -495,6 +537,35 @@ function Select(){
                     </ul>
                 </nav>
             </Card>
+            <Modal
+                show={hapusShow}
+                onHide={deleteKeluar}
+                keyboard={false}>
+
+                <Modal.Body>
+                    <div style={border}>
+                        <FontAwesomeIcon style={fa_delete} icon={faExclamationTriangle}/>
+                        <p style={text_delete}>Anda tidak akan dapat mengembalikan data ini !</p>
+                        <p style={delete_name}>{add.name}</p>                  
+                        <p style={text_delete2}>Yakin ingin hapus ?</p>
+                        <div style={button_delete}>
+                            <Button 
+                                variant="outline-secondary"
+                                title='Batal'
+                                style={{marginRight:'10px'}} 
+                                onClick={deleteKeluar}>
+                                <FontAwesomeIcon style={{fontSize:'20px'}} icon={faTimes}/>
+                            </Button>
+                            <Button 
+                                variant="outline-danger"
+                                title='Hapus'
+                                onClick={() => deleteData(indexHapus)}>
+                                <FontAwesomeIcon icon={faTrash}/>
+                            </Button>
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
         </div>
     )
 }

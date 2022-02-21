@@ -3,7 +3,7 @@ import './App.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import utama from '../src/pages/Home/utama';
-import dashboard from '../src/pages/Home/dashboard';
+// import dashboard from '../src/pages/Home/dashboard';
 // import sidebarDua from '../src/pages/Home/sidebarDua';
 // import sidebarTiga from '../src/pages/Home/sidebarTiga';
 import sidebarUtama from '../src/pages/Home/dasboardUtama';
@@ -13,6 +13,7 @@ import selectFormik from '../src/pages/Home/selectFormik';
 // import perpustakaan from '../src/pages/Home/perpustakaan';
 import pageTable from '../src/pages/Home/Folder-Satu/PageTable';
 import SidebarDua from '../src/pages/sidebar/sidebar_2';
+import MultiForm from '../src/pages/Home/Multi-Form/MultiFormJs';
 
 //membuat fungsi
 function App (){
@@ -22,7 +23,7 @@ function App (){
         {/* <Sidebar_dua/> */}
         {/* <Router>
           <Rskyy />
-          <Switch>
+          <Switch> 
             <Route path='/' exact component={sidebarUtama} />
             <Route path='/reports' component={utama} />
             <Route path='/product' component={dashboard} />
@@ -40,7 +41,7 @@ function App (){
           <Switch>
             <Route path='/' exact component={sidebarUtama} />
             <Route path='/reports' component={utama} />
-            <Route path='/product' component={dashboard} />
+            <Route path='/product' component={MultiForm} />
             <Route path='/team' component={pageTable} />
             <Route path='/messages' component={biodata} />
             <Route path='/support' component={selectFormik} />
