@@ -13,7 +13,8 @@ import selectFormik from '../src/pages/Home/selectFormik';
 // import perpustakaan from '../src/pages/Home/perpustakaan';
 import pageTable from '../src/pages/Home/Folder-Satu/PageTable';
 import SidebarDua from '../src/pages/sidebar/sidebar_2';
-import MultiForm from '../src/pages/Home/Multi-Form/MultiFormJs';
+// import MultiForm from '../src/pages/Home/Multi-Form/MultiFormJs';
+import MultiStep from '../src/pages/Home/Multi-Step/MultiStep';
 
 //membuat fungsi
 function App (){
@@ -41,7 +42,7 @@ function App (){
           <Switch>
             <Route path='/' exact component={sidebarUtama} />
             <Route path='/reports' component={utama} />
-            <Route path='/product' component={MultiForm} />
+            <Route path='/product' component={MultiStep} />
             <Route path='/team' component={pageTable} />
             <Route path='/messages' component={biodata} />
             <Route path='/support' component={selectFormik} />

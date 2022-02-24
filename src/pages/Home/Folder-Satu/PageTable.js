@@ -11,8 +11,6 @@ import _ from 'lodash';
 import { Switch } from '@headlessui/react';
 import './PageTable.css';
 import ReactLoading from "react-loading";
-// import InputFields from './InputFields';
-
 
 
 function Select(){
@@ -63,7 +61,7 @@ function Select(){
             if(datas.id === id) {
                 return{
                     ...datas, 
-                    checked: !datas.checked
+                    checked: !datas.checked 
                 }
             }
             return datas
@@ -315,9 +313,6 @@ function Select(){
                                 </tr>
                             </thead>
                             <tbody>
-                                {/* <Fragment>
-                                    <InputFields onChange={handleChange} onSubmit={handleSubmit} />
-                                </Fragment> */}
                                 <tr style={isEdit ? tr_hilang : tr_tampil}>
                                     <td></td>
                                     <td style={tabelDraw}>
